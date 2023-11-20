@@ -2,22 +2,21 @@ package ada_final;
 
 public class Tarea {
     public String Nombre;
-    public double Importancia;
-    public double Dificultad;
-    public double Urgencia;
     public int Duracion;
-    public double Prioridad;
+    public float Prioridad;
 
-    public Tarea(){}
+    public Tarea() {
+    }
 
-    public Tarea(String nombre, double importancia, double dificultad, double urgencia, int duracion)
-    {
+    public Tarea(String nombre, int importancia, int dificultad, int urgencia, int duracion) {
         this.Nombre = nombre;
-        this.Importancia = importancia;
-        this.Dificultad = dificultad;
-        this.Urgencia = urgencia;
         this.Duracion = duracion;
 
-        this.Prioridad = (this.Dificultad * 0.3 + this.Importancia * 0.4 + this.Urgencia * 0.3);
+        this.Prioridad = (dificultad * 0.3f + importancia * 0.4f + urgencia * 0.3f);
+    }
+
+    public Tarea(int duracion, float prioridad) {
+        this.Duracion = duracion;
+        this.Prioridad = prioridad;
     }
 }

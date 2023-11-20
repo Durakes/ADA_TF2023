@@ -6,23 +6,21 @@ import java.util.List;
 public class Algoritmo {
     public int diasDeLaSemana = 7;
     public int horasDelDia = 16;
-    public boolean[][] calendario = new boolean[diasDeLaSemana][horasDelDia];
+    public boolean[][] calendarioBool = new boolean[diasDeLaSemana][horasDelDia];
+    public String[][] calendarioFinal = new String[diasDeLaSemana][horasDelDia];
     List<Tarea> listaTareas = new ArrayList<Tarea>();
 
     public Algoritmo() {
         crearHorario();
         System.out.println("\n");
         System.out.println("\n");
-        //organizarTareas();
-        imprimirCalendario(calendario);
+        organizarTareas();
+        imprimirCalendarioTareas(calendarioFinal);
     }
 
     public void crearHorario() {
         // Inicializar la matriz con valores de ejemplo
-        inicializarCalendario(calendario);
-
-        // Imprimir el calendario
-        imprimirCalendario(calendario);
+        inicializarCalendario(calendarioBool);
     }
 
     public void inicializarCalendario(boolean[][] calendario) {
@@ -32,12 +30,17 @@ public class Algoritmo {
             }
         }
 
+        //ACA SE DEBE DE AGREGAR LAS TAREAS FIJAS DESDE FRONT
+        //SE DEBE DE LLENAR AMBAS MATRICES, PARA QUE SIRVA LA COMPARACION
+
         // Agregar algunos eventos de ejemplo
-        calendario[0][2] = true; // Lunes, 8 am
+        calendario[0][1] = true; // Lunes, 8 am
+        calendario[0][4] = true; // Lunes, 11 am
         calendario[2][7] = true; // Miércoles, 2 pm
         calendario[5][5] = true; // Sábado, 8 pm
     }
 
+    //Se puede borrar al acabar 
     public void imprimirCalendario(boolean[][] calendario) {
         System.out.println("Calendario Semanal:");
         System.out.println("\t Lun \t Mar \t Mié \t Jue \t Vie \t Sáb \t Dom");
@@ -52,44 +55,75 @@ public class Algoritmo {
             horaIni++;
         }
     }
+    //Se puede borrar al acabar 
+    public void imprimirCalendarioTareas(String[][] calendario) {
+        System.out.println("Calendario Semanal:");
+        System.out.println("\t Lun \t Mar \t Mié \t Jue \t Vie \t Sáb \t Dom");
+
+        int horaIni = 7;
+        for (int hora = 0; hora < calendario[0].length; hora++) {
+            System.out.printf(horaIni + "-" + (horaIni + 1) + "\t");
+            for (int dia = 0; dia < calendario.length; dia++) {
+                if (calendario[dia][hora] == null) {
+                    System.out.printf("Sin Tareas \t");
+                } else {
+                    System.out.printf(calendario[dia][hora] + "\t");
+                }
+            }
+            System.out.println();
+            horaIni++;
+        }
+    }
 
     public void organizarTareas() {
         Tarea tarea1 = new Tarea("Tarea ADA", 2, 1, 3, 4);
         Tarea tarea2 = new Tarea("Tarea GSI", 1, 3, 1, 5);
-        Tarea tarea3 = new Tarea("Tarea Compi", 3, 2, 3, 2);
-        // Ejemplo de uso
+        Tarea tarea3 = new Tarea("Tarea Compi", 3, 2, 3, 4);
+        Tarea tarea4 = new Tarea("Tarea FEMP", 3, 2, 2, 4);
+
         listaTareas.add(tarea1);
         listaTareas.add(tarea2);
         listaTareas.add(tarea3);
-        // Ordenar la lista de tareas por prioridad de mayor a menor
+        listaTareas.add(tarea4);
+
         quickSort(listaTareas, 0, listaTareas.size() - 1);
 
-        for (Tarea tarea : listaTareas) {
-            for (int i = 0; i < diasDeLaSemana; i++) {
-                for (int j = 0; j < horasDelDia; j++) {
-                    try{
-                    if (!calendario[i][j]) {
-                        calendario[i][j] = true;
-                        tarea.Duracion--;
-                        if (tarea.Duracion == 0) {
-                            break;
-                        }
-                    }}catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("Error en día: " + i + ", hora: " + j);
-                        e.printStackTrace();
-                    }
+        organizarCalendario(listaTareas, 0);
+    }
 
+    public void organizarCalendario(List<Tarea> listaTareas, int id) {
+        int k = id; // Índice para recorrer linealmente la matri
+        for (int idx = 0; idx < listaTareas.size(); idx++) {
+            Tarea tarea = listaTareas.get(idx);
+            int duracion = tarea.Duracion;
+
+            while (duracion > 0 && k < diasDeLaSemana * horasDelDia) {
+                int i = k / horasDelDia; // Calcula la fila
+                int j = k % horasDelDia; // Calcula la columna
+
+                if (!calendarioBool[i][j]) {
+                    calendarioBool[i][j] = true;
+                    calendarioFinal[i][j] = tarea.Nombre;
+                    duracion--;
+                } else {
+                    if (duracion != tarea.Duracion) {
+                        float ponderacion = (float) duracion / (float) tarea.Duracion;
+                        Tarea newTask = new Tarea(duracion, ponderacion * tarea.Prioridad);
+                        newTask.Nombre = tarea.Nombre;
+
+                        listaTareas.remove(tarea);
+
+                        agregarTareaOrdenada(listaTareas, newTask);
+
+                        break;
+                    }
                 }
-                if (tarea.Duracion == 0) 
-                {
-                    break;
+                k++;
+                if (duracion == 0) {
+                    listaTareas.remove(tarea);
                 }
             }
-        }
-
-        // Imprimir la lista ordenada
-        for (Tarea tarea : listaTareas) {
-            System.out.println(tarea.Nombre + " - Prioridad: " + tarea.Prioridad);
+            organizarCalendario(listaTareas, k);
         }
     }
 
@@ -126,13 +160,12 @@ public class Algoritmo {
     public void agregarTareaOrdenada(List<Tarea> listaTareas, Tarea nuevaTarea) {
         int index = busquedaBinaria(listaTareas, nuevaTarea.Prioridad, 0, listaTareas.size() - 1);
 
-        // Insertar la nueva tarea en la posición adecuada
         listaTareas.add(index, nuevaTarea);
     }
 
-    public int busquedaBinaria(List<Tarea> listaTareas, double prioridad, int low, int high) {
+    public int busquedaBinaria(List<Tarea> listaTareas, float prioridad, int low, int high) {
         if (high <= low) {
-            return (prioridad > listaTareas.get(low).Prioridad) ? (low + 1) : low;
+            return (prioridad < listaTareas.get(low).Prioridad) ? (low + 1) : low;
         }
 
         int mid = (low + high) / 2;
@@ -141,7 +174,7 @@ public class Algoritmo {
             return mid + 1;
         }
 
-        if (prioridad > listaTareas.get(mid).Prioridad) {
+        if (prioridad < listaTareas.get(mid).Prioridad) {
             return busquedaBinaria(listaTareas, prioridad, mid + 1, high);
         }
 
