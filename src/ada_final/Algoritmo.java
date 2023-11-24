@@ -10,11 +10,27 @@ public class Algoritmo {
     public String[][] calendarioFinal = new String[diasDeLaSemana][horasDelDia];
     List<Tarea> listaTareas = new ArrayList<Tarea>();
 
+    /* constructor con demo
     public Algoritmo() {
+        
         crearHorario();
         System.out.println("\n");
         System.out.println("\n");
         organizarTareas();
+        imprimirCalendarioTareas(calendarioFinal);    
+    }
+    */
+    
+    // Nuevo método para agregar tarea desde la interfaz gráfica
+    public void agregarTareaDesdeInterfaz(Tarea tarea) {
+        listaTareas.add(tarea);
+        //organizarCalendario(listaTareas, 0);
+        //imprimirCalendarioTareas(calendarioFinal);
+    }
+    
+    public void finishCalendario()
+    {
+        organizarCalendario(listaTareas, 0);
         imprimirCalendarioTareas(calendarioFinal);
     }
 
@@ -33,11 +49,12 @@ public class Algoritmo {
         //ACA SE DEBE DE AGREGAR LAS TAREAS FIJAS DESDE FRONT
         //SE DEBE DE LLENAR AMBAS MATRICES, PARA QUE SIRVA LA COMPARACION
 
-        // Agregar algunos eventos de ejemplo
+        /* Agregar algunos eventos de ejemplo
         calendario[0][1] = true; // Lunes, 8 am
         calendario[0][4] = true; // Lunes, 11 am
         calendario[2][7] = true; // Miércoles, 2 pm
         calendario[5][5] = true; // Sábado, 8 pm
+        */
     }
 
     //Se puede borrar al acabar 
