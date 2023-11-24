@@ -130,7 +130,6 @@ public class TareaFront extends javax.swing.JFrame {
         });
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Frame-5.png"))); // NOI18N
-
         txtImportancia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtImportanciaActionPerformed(evt);
@@ -284,7 +283,6 @@ public class TareaFront extends javax.swing.JFrame {
         mostrarMensaje("Se agregó la tarea: " + nombreTarea);
         // ya ordena todo  y muestra el horario ordenado redirigiendo al otro frame
     }//GEN-LAST:event_BotonIngresarDatos
-
     private void NombreTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NombreTareaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_NombreTareaActionPerformed
@@ -355,6 +353,9 @@ public class TareaFront extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> ComboBox1;
+    private javax.swing.JComboBox<String> ComboBox2;
+    private javax.swing.JComboBox<String> ComboBox3;
     private javax.swing.JTextField DuracionTarea;
     private javax.swing.JTextField NombreTarea;
     private javax.swing.JButton btnLimpiar;
