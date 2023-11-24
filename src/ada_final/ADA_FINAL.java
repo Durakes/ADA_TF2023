@@ -4,6 +4,8 @@ public class ADA_FINAL
     public static void main(String[] args) 
     {
         Algoritmo algo = new Algoritmo();
+        algo.organizarTareas();
+        System.out.println("xd");
     }
     
 }
