@@ -15,6 +15,9 @@ public class frameTareasFijas extends javax.swing.JFrame {
     /**
      * Creates new form frameTareasFijas
      */
+    
+    // Crea un modelo de tabla
+    DefaultTableModel modeloTabla = new DefaultTableModel();
     public Algoritmo algoritmo = new Algoritmo();
 
     public frameTareasFijas() {
@@ -24,7 +27,10 @@ public class frameTareasFijas extends javax.swing.JFrame {
     // Constructor que recibe un objeto Algoritmo
     public frameTareasFijas(Algoritmo algoritmoPasado) {
         algoritmo = algoritmoPasado;
+        
         initComponents();  // Asegúrate de llamar a este método en tu constructor.
+        parametrizarTabla();
+        actualizarTablaTareasFijas();
     }
 
     /**
@@ -181,12 +187,27 @@ public class frameTareasFijas extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cboHoraActionPerformed
 
+    public void parametrizarTabla()
+    {
+        // Crea un modelo de tabla
+        modeloTabla = new DefaultTableModel();
+        jTable1.setModel(modeloTabla);
+
+        // Agrega las columnas al modelo de la tabla
+        modeloTabla.addColumn(""); // Columna vacía para horas
+        for (int i = 0; i < algoritmo.diasDeLaSemana; i++) {
+            modeloTabla.addColumn(getNombreDia(i));
+        }
+    }
+    
     // Método para actualizar la tabla con las tareas fijas
     private void actualizarTablaTareasFijas() {
+        modeloTabla.setRowCount(0);
         // Obtén los resultados del calendario
         boolean[][] calendario = algoritmo.calendarioBool;
         String[][] nombresActividades = algoritmo.calendarioFinal;
 
+        /*
         // Crea un modelo de tabla
         DefaultTableModel modeloTabla = new DefaultTableModel();
         jTable1.setModel(modeloTabla); // jTableTareasFijas es tu JTable
@@ -196,6 +217,7 @@ public class frameTareasFijas extends javax.swing.JFrame {
         for (int i = 0; i < algoritmo.diasDeLaSemana; i++) {
             modeloTabla.addColumn(getNombreDia(i));
         }
+        */
         
         // Agrega los datos al modelo de la tabla
         int horaIni = 7;
@@ -257,10 +279,16 @@ public class frameTareasFijas extends javax.swing.JFrame {
             
             // Actualiza la tabla con las tareas fijas
             actualizarTablaTareasFijas();
+            
+            //limpiar campo
+            txtTareaFija.setText("");
         } else {
             System.out.println("Error: No se pudo agregar la tarea fija al calendario. Día o hora no reconocidos.");
             String mensajeError = "Error: No se pudo agregar la tarea fija al calendario. Día o hora no reconocidos.\n";
             txtHistorial.append(mensajeError);
+            
+            //limpiar campo
+            txtTareaFija.setText("");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

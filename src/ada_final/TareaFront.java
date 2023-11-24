@@ -4,6 +4,8 @@
  */
 package ada_final;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Paris
@@ -255,6 +257,11 @@ public class TareaFront extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_DuracionTareaActionPerformed
 
+    // Método para mostrar una ventana emergente con un mensaje
+    private void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
     private void BotonIngresarDatos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonIngresarDatos
         // TODO add your handling code here:
         //Algoritmo algoritmo = new Algoritmo();
@@ -272,6 +279,9 @@ public class TareaFront extends javax.swing.JFrame {
         // Crear tarea y agregarla al algoritmo
         Tarea nuevaTarea = new Tarea(nombreTarea, importancia, dificultad, urgencia, duracionTarea);
         algoritmo.agregarTareaDesdeInterfaz(nuevaTarea);
+        
+        // Muestra la ventana emergente
+        mostrarMensaje("Se agregó la tarea: " + nombreTarea);
         // ya ordena todo  y muestra el horario ordenado redirigiendo al otro frame
     }//GEN-LAST:event_BotonIngresarDatos
 

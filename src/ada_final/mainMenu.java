@@ -16,14 +16,22 @@ public class mainMenu extends javax.swing.JFrame {
      * Creates new form mainMenu
      */
     
+    // Crea un modelo de tabla
+    DefaultTableModel modeloTabla = new DefaultTableModel();
+    
     public Algoritmo algoritmoGeneral = new Algoritmo() ;
     public mainMenu() {
+        
         initComponents();
+        parametrizarTabla();
     }
     
     public mainMenu(Algoritmo algoritmo) {
         algoritmoGeneral = algoritmo;
         initComponents();  // Asegúrate de llamar a este método en tu constructor.
+       
+        parametrizarTabla();
+        actualizarTabla();
     }
 
     /**
@@ -129,6 +137,50 @@ public class mainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     
+    public void parametrizarTabla()
+    {
+        // Crea un modelo de tabla
+        modeloTabla = new DefaultTableModel();
+        jTable1.setModel(modeloTabla);
+
+        // Agrega las columnas al modelo de la tabla
+        modeloTabla.addColumn(""); // Columna vacía para horas
+        for (int i = 0; i < algoritmoGeneral.diasDeLaSemana; i++) {
+            modeloTabla.addColumn(getNombreDia(i));
+        }
+    }
+    
+    public void actualizarTabla()
+    {
+        modeloTabla.setRowCount(0);
+        // Obtén los resultados del calendario
+        String[][] calendarioFinal = algoritmoGeneral.calendarioFinal;
+
+        /*
+        // Crea un modelo de tabla
+        DefaultTableModel modeloTabla = new DefaultTableModel();
+        jTable1.setModel(modeloTabla);
+
+        // Agrega las columnas al modelo de la tabla
+        modeloTabla.addColumn(""); // Columna vacía para horas
+        for (int i = 0; i < algoritmoGeneral.diasDeLaSemana; i++) {
+            modeloTabla.addColumn(getNombreDia(i));
+        }
+
+        */
+        // Agrega los datos al modelo de la tabla
+        int horaIni = 7;
+        for (int hora = 0; hora < algoritmoGeneral.horasDelDia; hora++) {
+            Object[] fila = new Object[algoritmoGeneral.diasDeLaSemana + 1];
+            fila[0] = horaIni + "-" + (horaIni + 1);
+            for (int dia = 0; dia < algoritmoGeneral.diasDeLaSemana; dia++) {
+                fila[dia + 1] = calendarioFinal[dia][hora];
+            }
+            modeloTabla.addRow(fila);
+            horaIni++;
+        }
+    }
+    
     // Método para obtener el nombre del día según el índice
     private String getNombreDia(int indice) {
         String[] nombresDias = {"Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"};
@@ -140,7 +192,9 @@ public class mainMenu extends javax.swing.JFrame {
         
         // TODO add your handling code here:
         algoritmoGeneral.finishCalendario();
-
+        
+        actualizarTabla();
+        /*
         // Obtén los resultados del calendario
         String[][] calendarioFinal = algoritmoGeneral.calendarioFinal;
 
@@ -165,6 +219,7 @@ public class mainMenu extends javax.swing.JFrame {
             modeloTabla.addRow(fila);
             horaIni++;
         }
+        */
         
         /*
         algoritmoGeneral.finishCalendario();
