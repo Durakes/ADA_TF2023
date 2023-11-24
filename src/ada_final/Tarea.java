@@ -3,6 +3,7 @@ package ada_final;
 public class Tarea {
     public String Nombre;
     public int Duracion;
+    //prioridad se calcula automaticamente
     public float Prioridad;
 
     public Tarea() {
